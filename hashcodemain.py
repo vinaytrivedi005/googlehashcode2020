@@ -5,6 +5,8 @@ LibMaxBooksSent=[]
 LibBooks={}
 Libs=(LibSignUpDays,LibMaxBooksSent,LibBooks)
 Libstaken={}
+procLibCalledCount = 0
+sys.setrecursionlimit(1000000)
 def take_input(f):
     global B,L,D,Bscores
     [B,L,D] = [int(i) for i in f.readline().split()]
@@ -34,9 +36,8 @@ def max_score_forgiven_days(Lib2Check,days):
         return max_score,[bookSent[0] for bookSent in scoredBooks[:d+1]]
 
 
-def processLibrary():
+def processLibrary(days):
     global LibSignUpDays,LibMaxBooksSent,LibBooks,Libstaken
-    days=D
     max_score=0;max_score_lib=-1;max_booksSent=None
     if days<=1:
         return max_score
@@ -61,13 +62,13 @@ def processLibrary():
     temp=[(books,b) for books in LibBooks for b in books2remove if b in LibBooks[books]]
     for t in temp:
         LibBooks[t[0]].remove(t[1])
-    return max_score + (processLibrary())
+    return max_score + (processLibrary(days))
 
 if __name__ == '__main__':
     with open(sys.argv[1]) as f:
         take_input(f)
         # print(processLibrary())
-        processLibrary()
+        processLibrary(D)
         print(len(Libstaken))
         for k in Libstaken:
             print(k,len(Libstaken[k]))
